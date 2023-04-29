@@ -65,8 +65,16 @@ const Home = () => {
         <Toolbar />
         <Grid container spacing={2}>
           {SOUNDS.map((card) => (
-            <Grid item xs={3} sx={{ aspectRatio: "16 / 9" }} key={card.source}>
-              <Card source={card.source} showControls={true} />
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              lg={3}
+              sx={{ aspectRatio: "16 / 9" }}
+              key={card.source}
+            >
+              <Card source={card.source} />
             </Grid>
           ))}
         </Grid>
