@@ -44,4 +44,16 @@ export const SOUNDS: Sound[] = [
     source: "uiMXGIG_DQo",
     name: "coffee shop",
   },
+  {
+    source: "nZUMdnky11E",
+    name: "jungle birds",
+  },
+  {
+    source: "-xFSyOIyC-I",
+    name: "underwater",
+  },
+  {
+    source: "PvMCXCGSj-o",
+    name: "jelly fish aquarium",
+  },
 ];
