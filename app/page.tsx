@@ -1,6 +1,6 @@
 "use client";
 
-import Card from "@/components/Card/Card";
+import YoutubeCard from "@/components/YoutubeCard/YoutubeCard";
 import Spinner from "@/components/LoadingSpinner/LoadingSpinner";
 import { getSounds } from "@/firebase/actions";
 import { SoundType } from "@/lib/types";
@@ -69,7 +69,7 @@ const Home = () => {
             sx={{ aspectRatio: "16 / 9" }}
             key={card.source}
           >
-            <Card source={card.source} />
+            <YoutubeCard source={card.source} />
           </Grid>
         ))}
       </Grid>
