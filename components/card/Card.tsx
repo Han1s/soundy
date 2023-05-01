@@ -19,6 +19,9 @@ const YoutubeCard = ({ source }: YoutubeCard) => {
 
   return (
     <Card>
+      <CardActions>
+        <StarOutlineIcon color="primary" />
+      </CardActions>
       <CardMedia
         src={link}
         component={"iframe"}
@@ -29,9 +32,6 @@ const YoutubeCard = ({ source }: YoutubeCard) => {
           border: "none",
         }}
       />
-      <CardActions>
-        <StarOutlineIcon color="primary" />
-      </CardActions>
     </Card>
   );
 };
