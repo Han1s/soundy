@@ -1,6 +1,4 @@
-import { Sound } from "@/lib/types";
 import axios from "axios";
-import { parse } from "path";
 
 const FIREBASE_URL =
   "https://authentication-628fb-default-rtdb.europe-west1.firebasedatabase.app/";

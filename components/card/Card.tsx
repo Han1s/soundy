@@ -3,9 +3,6 @@
 import {
   Card,
   CardMedia,
-  CardContent,
-  Typography,
-  Button,
   CardActions,
 } from "@mui/material";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
