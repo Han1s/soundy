@@ -15,8 +15,6 @@ const darkTheme = createTheme({
 });
 
 const Providers = ({ children }: Props) => {
-  console.log("providers");
-
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />

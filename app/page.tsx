@@ -1,26 +1,81 @@
 "use client";
 
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
+import Card from "@/components/Card/Card";
+import Spinner from "@/components/LoadingSpinner/LoadingSpinner";
+import { getSounds } from "@/firebase/actions";
+import { SoundType } from "@/lib/types";
+import AddIcon from "@mui/icons-material/Add";
+import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
+import { Grid } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
-import Toolbar from "@mui/material/Toolbar";
+import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import Card from "@/components/card/Card";
-import { Grid } from "@mui/material";
-import { SOUNDS } from "@/lib/sounds";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
+import StarIcon from "@mui/icons-material/Star";
 
 const drawerWidth = 240;
 
+const endpoints = [
+  {
+    text: "All Sounds",
+    icon: <LibraryMusicIcon />,
+  },
+  {
+    text: "Favorites",
+    icon: <StarIcon />,
+  },
+  {
+    text: "Add a Sound",
+    icon: <AddIcon />,
+  },
+];
+
 const Home = () => {
+  const [loading, setLoading] = React.useState(true);
+  const [sounds, setSounds] = React.useState<SoundType[]>([]);
+
+  React.useEffect(() => {
+    getSounds().then((res) => {
+      const sounds: SoundType[] = [];
+
+      Object.keys(res.data).forEach((key) => {
+        sounds.push({ ...res.data[key], id: key });
+      });
+
+      setSounds(sounds);
+      setLoading(false);
+    });
+  }, []);
+
+  let soundSection = <Spinner />;
+  if (!loading) {
+    soundSection = (
+      <Grid container spacing={2}>
+        {sounds.map((card) => (
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={3}
+            sx={{ aspectRatio: "16 / 9" }}
+            key={card.source}
+          >
+            <Card source={card.source} />
+          </Grid>
+        ))}
+      </Grid>
+    );
+  }
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -48,13 +103,11 @@ const Home = () => {
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
           <List>
-            {["Sounds"].map((text, index) => (
-              <ListItem key={text} disablePadding>
+            {endpoints.map((endpoint) => (
+              <ListItem key={endpoint.text} disablePadding>
                 <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
+                  <ListItemIcon>{endpoint.icon}</ListItemIcon>
+                  <ListItemText primary={endpoint.text} />
                 </ListItemButton>
               </ListItem>
             ))}
@@ -63,21 +116,7 @@ const Home = () => {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
-        <Grid container spacing={2}>
-          {SOUNDS.map((card) => (
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              md={4}
-              lg={3}
-              sx={{ aspectRatio: "16 / 9" }}
-              key={card.source}
-            >
-              <Card source={card.source} />
-            </Grid>
-          ))}
-        </Grid>
+        {soundSection}
       </Box>
     </Box>
   );
