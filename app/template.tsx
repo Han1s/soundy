@@ -65,11 +65,11 @@ const Template = ({ children }: { children: React.ReactNode }) => {
           <List>
             {endpoints.map((endpoint) => (
               <Link
+                key={endpoint.text}
                 style={{ textDecoration: "none", color: "inherit" }}
                 href={endpoint.url}
               >
                 <ListItem
-                  key={endpoint.text}
                   disablePadding
                   disabled={endpoint?.disabled}
                 >
