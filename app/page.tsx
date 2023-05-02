@@ -1,15 +1,15 @@
 "use client";
 
-import YoutubeCard from "@/components/YoutubeCard/YoutubeCard";
 import Spinner from "@/components/LoadingSpinner/LoadingSpinner";
+import YoutubeCard from "@/components/YoutubeCard/YoutubeCard";
 import { getSounds } from "@/firebase/actions";
 import { SoundType } from "@/lib/types";
 import AddIcon from "@mui/icons-material/Add";
 import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
+import StarIcon from "@mui/icons-material/Star";
 import { Grid } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -19,24 +19,6 @@ import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
-import StarIcon from "@mui/icons-material/Star";
-
-const drawerWidth = 240;
-
-const endpoints = [
-  {
-    text: "All Sounds",
-    icon: <LibraryMusicIcon />,
-  },
-  {
-    text: "Favorites",
-    icon: <StarIcon />,
-  },
-  {
-    text: "Add a Sound",
-    icon: <AddIcon />,
-  },
-];
 
 const Home = () => {
   const [loading, setLoading] = React.useState(true);
@@ -76,50 +58,7 @@ const Home = () => {
     );
   }
 
-  return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      >
-        <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-            Soundy
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: {
-            width: drawerWidth,
-            boxSizing: "border-box",
-          },
-        }}
-      >
-        <Toolbar />
-        <Box sx={{ overflow: "auto" }}>
-          <List>
-            {endpoints.map((endpoint) => (
-              <ListItem key={endpoint.text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>{endpoint.icon}</ListItemIcon>
-                  <ListItemText primary={endpoint.text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        </Box>
-      </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Toolbar />
-        {soundSection}
-      </Box>
-    </Box>
-  );
+  return soundSection;
 };
 
 export default Home;
