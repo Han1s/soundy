@@ -1,5 +1,5 @@
 const Page = () => {
-  return <div>Favorites</div>;
+  return <div>TODO: Favorites</div>;
 };
 
 export default Page;

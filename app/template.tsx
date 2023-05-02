@@ -27,6 +27,7 @@ const endpoints = [
     text: "Favorites",
     icon: <StarIcon />,
     url: "/favorites",
+    disabled: true,
   },
   {
     text: "Add a Sound",
@@ -67,7 +68,11 @@ const Template = ({ children }: { children: React.ReactNode }) => {
                 style={{ textDecoration: "none", color: "inherit" }}
                 href={endpoint.url}
               >
-                <ListItem key={endpoint.text} disablePadding>
+                <ListItem
+                  key={endpoint.text}
+                  disablePadding
+                  disabled={endpoint?.disabled}
+                >
                   <ListItemButton>
                     <ListItemIcon>{endpoint.icon}</ListItemIcon>
                     <ListItemText primary={endpoint.text} />
