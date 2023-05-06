@@ -1,7 +1,9 @@
 "use client";
 
 import { postSound } from "@/firebase/actions";
+import { addSound, db } from "@/firebase/config";
 import { Button, Container, TextField } from "@mui/material";
+import { Timestamp } from "firebase/firestore/lite";
 import { useState } from "react";
 
 const Page = () => {
@@ -16,8 +18,7 @@ const Page = () => {
 
     source = value.match(/(?<=\=).+?(?=\&)/)![0] as string;
 
-    postSound({ source }).then((res) => {
-      console.log(res);
+    addSound(db, { source, date: Timestamp.fromDate(new Date()) }).then(() => {
       window.alert("sound successfully added");
     });
   };

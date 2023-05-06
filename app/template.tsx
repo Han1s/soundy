@@ -14,6 +14,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
+import { useSelectedLayoutSegment } from "next/navigation";
 
 const drawerWidth = 240;
 
@@ -22,21 +23,26 @@ const endpoints = [
     text: "All Sounds",
     icon: <LibraryMusicIcon />,
     url: "/",
+    targetSegment: null,
   },
   {
     text: "Favorites",
     icon: <StarIcon />,
     url: "/favorites",
     disabled: true,
+    targetSegment: "favorites",
   },
   {
     text: "Add a Sound",
     icon: <AddIcon />,
     url: "/add",
+    targetSegment: "add",
   },
 ];
 
 const Template = ({ children }: { children: React.ReactNode }) => {
+  const activeSegment = useSelectedLayoutSegment();
+
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar
@@ -69,11 +75,8 @@ const Template = ({ children }: { children: React.ReactNode }) => {
                 style={{ textDecoration: "none", color: "inherit" }}
                 href={endpoint.url}
               >
-                <ListItem
-                  disablePadding
-                  disabled={endpoint?.disabled}
-                >
-                  <ListItemButton>
+                <ListItem disablePadding disabled={endpoint?.disabled}>
+                  <ListItemButton selected={activeSegment === endpoint.targetSegment}>
                     <ListItemIcon>{endpoint.icon}</ListItemIcon>
                     <ListItemText primary={endpoint.text} />
                   </ListItemButton>

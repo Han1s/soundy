@@ -2,7 +2,7 @@
 
 import Spinner from "@/components/LoadingSpinner/LoadingSpinner";
 import YoutubeCard from "@/components/YoutubeCard/YoutubeCard";
-import { getSounds } from "@/firebase/actions";
+import { db, getSounds } from "@/firebase/config";
 import { SoundType } from "@/lib/types";
 import AddIcon from "@mui/icons-material/Add";
 import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
@@ -18,23 +18,18 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import { DocumentData } from "firebase/firestore/lite";
+import { useRouter } from "next/navigation";
 import * as React from "react";
 
 const Home = () => {
   const [loading, setLoading] = React.useState(true);
-  const [sounds, setSounds] = React.useState<SoundType[]>([]);
+  const [sounds, setSounds] = React.useState<DocumentData[]>([]);
+  const router = useRouter();
 
   React.useEffect(() => {
-    getSounds().then((res) => {
-      const sounds: SoundType[] = [];
-
-      Object.keys(res.data).forEach((key) => {
-        sounds.push({ ...res.data[key], id: key });
-      });
-
-      setSounds(sounds);
-      setLoading(false);
-    });
+    getSounds(db).then((firebaseSounds) => setSounds(firebaseSounds));
+    setLoading(false);
   }, []);
 
   let soundSection = <Spinner />;

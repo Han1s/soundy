@@ -1,18 +1,46 @@
-import firebase, { getApps, initializeApp } from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
+// Import the functions you need from the SDKs you need
+import { SoundType } from "@/lib/types";
+import { initializeApp } from "firebase/app";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  Firestore,
+  addDoc,
+} from "firebase/firestore/lite";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  apiKey: "AIzaSyAyVjEoDbi_xwxXReB5pPns-rBfHhrJPrI",
+  authDomain: "authentication-628fb.firebaseapp.com",
+  databaseURL:
+    "https://authentication-628fb-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "authentication-628fb",
+  storageBucket: "authentication-628fb.appspot.com",
+  messagingSenderId: "959292263110",
+  appId: "1:959292263110:web:cad2efdc41664cebfc65c7",
 };
 
-let firebase_app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
 
-export default firebase_app;
+// Get a list of cities from your database
+export async function getSounds(db: Firestore) {
+  const soundsCol = collection(db, "sounds");
+  const soundsSnapshot = await getDocs(soundsCol);
+  const soundList = soundsSnapshot.docs.map((doc) => doc.data());
+  return soundList;
+}
 
 
+export async function addSound(db: Firestore, sound: SoundType) {
+  try {
+    const docRef = await addDoc(collection(db, "sounds"), sound);
+    console.log("Document written with ID: ", docRef.id);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+}
