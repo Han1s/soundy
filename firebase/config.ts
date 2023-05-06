@@ -25,6 +25,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
 export const db = getFirestore(app);
 
 // Get a list of cities from your database
@@ -34,7 +35,6 @@ export async function getSounds(db: Firestore) {
   const soundList = soundsSnapshot.docs.map((doc) => doc.data());
   return soundList;
 }
-
 
 export async function addSound(db: Firestore, sound: SoundType) {
   try {

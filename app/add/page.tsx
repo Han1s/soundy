@@ -1,6 +1,5 @@
 "use client";
 
-import { postSound } from "@/firebase/actions";
 import { addSound, db } from "@/firebase/config";
 import { Button, Container, TextField } from "@mui/material";
 import { Timestamp } from "firebase/firestore/lite";
