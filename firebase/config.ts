@@ -1,5 +1,4 @@
 // Import the functions you need from the SDKs you need
-import { FavoriteSoundType, SoundType } from "@/lib/types";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import {
@@ -44,9 +43,7 @@ export async function addSound(db: Firestore, id: string, sound: SoundType) {
   console.log("this is the id: ", id);
   console.log(sound);
   try {
-    const docRef = await setDoc(doc(db, "sounds", id), sound);
-    console.log(docRef);
-    console.log("Document written with ID: ", docRef);
+    await setDoc(doc(db, "sounds", id), sound);
   } catch (e) {
     console.error("Error adding document: ", e);
   }
@@ -62,8 +59,6 @@ export async function addFavoriteSound(
       collection(db, "favoriteSounds", id),
       favoriteSound
     );
-    console.log(docRef);
-    console.log("Document written with ID: ", docRef.id);
   } catch (e) {
     console.error("Error adding document: ", e);
   }

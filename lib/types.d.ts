@@ -1,11 +1,9 @@
-import { Timestamp } from "firebase/firestore/lite";
-
-type SoundType {
+type SoundType = {
   date: FieldValue;
   source: string;
-}
+};
 
-type FavoriteSoundType {
+type FavoriteSoundType = {
   uid: string;
   source: string;
-}
+};
