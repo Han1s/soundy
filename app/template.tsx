@@ -28,6 +28,7 @@ const endpoints = [
     icon: <LibraryMusicIcon />,
     url: "/",
     targetSegment: null,
+    guarded: false,
   },
   {
     text: "Favorites",
@@ -35,14 +36,14 @@ const endpoints = [
     url: "/favorites",
     disabled: true,
     targetSegment: "favorites",
+    guarded: true,
   },
   {
     text: "Add a Sound",
     icon: <AddIcon />,
     url: "/add",
     targetSegment: "add",
-
-    
+    guarded: true,
   },
 ];
 
@@ -122,7 +123,7 @@ const Template = ({ children }: { children: React.ReactNode }) => {
               <Link
                 key={endpoint.text}
                 style={{ textDecoration: "none", color: "inherit" }}
-                href={endpoint.url}
+                href={endpoint.guarded && !loggedIn ? "/sign-in" : endpoint.url}
               >
                 <ListItem disablePadding disabled={endpoint?.disabled}>
                   <ListItemButton
