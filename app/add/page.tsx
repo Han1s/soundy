@@ -2,11 +2,16 @@
 
 import { addSound, db } from "@/firebase/config";
 import { Button, Container, TextField } from "@mui/material";
+import { onAuthStateChanged } from "firebase/auth";
 import { serverTimestamp } from "firebase/firestore";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { auth } from "@/firebase/config";
 
 const Page = () => {
   const [value, setValue] = useState("");
+
+  const router = useRouter();
 
   const getVideoId = (url: string) => {
     const videoId = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
@@ -15,11 +20,14 @@ const Page = () => {
       : videoId[0];
   };
 
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      router.replace("/sign-in");
+    }
+  });
+
   const uploadHandler = () => {
     const source = getVideoId(value);
-
-    console.log(source);
-    console.log(serverTimestamp());
 
     addSound(db, source, { date: serverTimestamp(), source })
       .then(() => {
