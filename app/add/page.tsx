@@ -2,44 +2,38 @@
 
 import { addSound, db } from "@/firebase/config";
 import { Button, Container, TextField } from "@mui/material";
-import { Timestamp } from "firebase/firestore/lite";
+import { serverTimestamp } from "firebase/firestore";
 import { useState } from "react";
 
 const Page = () => {
   const [value, setValue] = useState("");
 
-  const uploadHandler = () => {
-    let source = "";
-    if (!isValid(value)) {
-      window.alert("This is not a valid link, please try again.");
-      return;
-    }
-
-    source = value.match(/(?<=\=).+?(?=\&)/)![0] as string;
-
-    addSound(db, { source, date: Timestamp.fromDate(new Date()) }).then(() => {
-      window.alert("sound successfully added");
-    });
+  const getVideoId = (url: string) => {
+    const videoId = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+    return videoId[2] !== undefined
+      ? videoId[2].split(/[^0-9a-z_\-]/i)[0]
+      : videoId[0];
   };
 
-  const isValid = (link: string) => {
-    if (!link.includes("www.youtube.com/watch?v=")) {
-      return false;
-    }
+  const uploadHandler = () => {
+    const source = getVideoId(value);
 
-    const matches = link.match(/(?<=\=).+?(?=\&)/);
+    console.log(source);
+    console.log(serverTimestamp());
 
-    if (!matches || !matches[0]) {
-      return false;
-    }
-
-    return true;
+    addSound(db, source, { date: serverTimestamp(), source })
+      .then(() => {
+        window.alert("sound successfully added");
+      })
+      .catch((res) => {
+        console.log(res);
+      });
   };
 
   return (
     <Container>
       <TextField
-        placeholder="https://www.youtube.com/watch?v=..."
+        placeholder="insert video link"
         id="standard-name"
         type="text"
         fullWidth

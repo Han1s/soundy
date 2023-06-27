@@ -1,13 +1,16 @@
 // Import the functions you need from the SDKs you need
-import { SoundType } from "@/lib/types";
+import { FavoriteSoundType, SoundType } from "@/lib/types";
 import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 import {
   getFirestore,
   collection,
   getDocs,
   Firestore,
   addDoc,
-} from "firebase/firestore/lite";
+  setDoc,
+  doc,
+} from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -26,9 +29,10 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
+export const auth = getAuth(app);
+
 export const db = getFirestore(app);
 
-// Get a list of cities from your database
 export async function getSounds(db: Firestore) {
   const soundsCol = collection(db, "sounds");
   const soundsSnapshot = await getDocs(soundsCol);
@@ -36,9 +40,29 @@ export async function getSounds(db: Firestore) {
   return soundList;
 }
 
-export async function addSound(db: Firestore, sound: SoundType) {
+export async function addSound(db: Firestore, id: string, sound: SoundType) {
+  console.log("this is the id: ", id);
+  console.log(sound);
   try {
-    const docRef = await addDoc(collection(db, "sounds"), sound);
+    const docRef = await setDoc(doc(db, "sounds", id), sound);
+    console.log(docRef);
+    console.log("Document written with ID: ", docRef);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+}
+
+export async function addFavoriteSound(
+  db: Firestore,
+  id: string,
+  favoriteSound: FavoriteSoundType
+) {
+  try {
+    const docRef = await addDoc(
+      collection(db, "favoriteSounds", id),
+      favoriteSound
+    );
+    console.log(docRef);
     console.log("Document written with ID: ", docRef.id);
   } catch (e) {
     console.error("Error adding document: ", e);

@@ -27,6 +27,8 @@ const Home = () => {
   const [sounds, setSounds] = React.useState<DocumentData[]>([]);
   const router = useRouter();
 
+  console.log(sounds);
+
   React.useEffect(() => {
     getSounds(db).then((firebaseSounds) => setSounds(firebaseSounds));
     setLoading(false);
@@ -37,15 +39,7 @@ const Home = () => {
     soundSection = (
       <Grid container spacing={2}>
         {sounds.map((card) => (
-          <Grid
-            item
-            xs={12}
-            sm={6}
-            md={4}
-            lg={3}
-            sx={{ aspectRatio: "16 / 9" }}
-            key={card.source}
-          >
+          <Grid item xs={12} sm={6} lg={4} xl={3} key={card.source}>
             <YoutubeCard source={card.source} />
           </Grid>
         ))}
