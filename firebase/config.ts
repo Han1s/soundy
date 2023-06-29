@@ -40,10 +40,8 @@ export async function getSounds(db: Firestore) {
 }
 
 export async function addSound(db: Firestore, id: string, sound: SoundType) {
-  console.log("this is the id: ", id);
-  console.log(sound);
   try {
-    await setDoc(doc(db, "sounds", id), sound);
+    await setDoc(doc(db, "sounds", id), {...sound, uid: auth.currentUser!.uid});
   } catch (e) {
     console.error("Error adding document: ", e);
   }
