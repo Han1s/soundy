@@ -9,6 +9,8 @@ import {
   addDoc,
   setDoc,
   doc,
+  query,
+  where,
 } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -28,23 +30,30 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
+// get auth
 export const auth = getAuth(app);
 
+// get db
 export const db = getFirestore(app);
 
-export async function getSounds(db: Firestore) {
-  const soundsCol = collection(db, "sounds");
-  const soundsSnapshot = await getDocs(soundsCol);
-  const soundList = soundsSnapshot.docs.map((doc) => doc.data());
-  return soundList;
-}
+const soundsRef = collection(db, "sounds");
 
-export async function addSound(db: Firestore, id: string, sound: SoundType) {
-  try {
-    await setDoc(doc(db, "sounds", id), {...sound, uid: auth.currentUser!.uid});
-  } catch (e) {
-    console.error("Error adding document: ", e);
-  }
+export const getSounds = () => {
+  return getDocs(soundsRef).then((snapshot) =>
+    snapshot.docs.map((doc) => doc.data())
+  );
+};
+
+export const addSoundNew = (id: string, sound: SoundType) => {
+  const soundRef = doc(db, "sounds", id);
+
+  return setDoc(soundRef, { ...sound, uid: auth.currentUser!.uid });
+};
+
+export const getUserBooks = () => {
+  const q = query(soundsRef, where('uid', '==', auth.currentUser!.uid))
+
+  return getDocs(q).then((snapshot) => snapshot.docs.map((doc) => doc.data()));
 }
 
 export async function addFavoriteSound(

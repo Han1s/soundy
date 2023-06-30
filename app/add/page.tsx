@@ -1,6 +1,6 @@
 "use client";
 
-import { addSound, db } from "@/firebase/config";
+import { addSound } from "@/firebase/config";
 import { Button, Container, TextField } from "@mui/material";
 import { onAuthStateChanged } from "firebase/auth";
 import { serverTimestamp } from "firebase/firestore";
@@ -29,12 +29,12 @@ const Page = () => {
   const uploadHandler = () => {
     const source = getVideoId(value);
 
-    addSound(db, source, { date: serverTimestamp(), source })
+    addSound(source, { date: serverTimestamp(), source })
       .then(() => {
         window.alert("sound successfully added");
       })
-      .catch((res) => {
-        console.log(res);
+      .catch((err) => {
+        window.alert(err.message);
       });
   };
 

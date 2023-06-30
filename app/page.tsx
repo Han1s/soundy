@@ -2,10 +2,9 @@
 
 import Spinner from "@/components/LoadingSpinner/LoadingSpinner";
 import YoutubeCard from "@/components/YoutubeCard/YoutubeCard";
-import { db, getSounds } from "@/firebase/config";
+import { getSounds } from "@/firebase/config";
 import { Grid } from "@mui/material";
 import { DocumentData } from "firebase/firestore/lite";
-import { useRouter } from "next/navigation";
 import * as React from "react";
 
 const Home = () => {
@@ -13,8 +12,10 @@ const Home = () => {
   const [sounds, setSounds] = React.useState<DocumentData[]>([]);
 
   React.useEffect(() => {
-    getSounds(db).then((firebaseSounds) => setSounds(firebaseSounds));
-    setLoading(false);
+    getSounds().then((firebaseSounds) => {
+      setSounds(firebaseSounds);
+      setLoading(false);
+    });
   }, []);
 
   let soundSection = <Spinner />;
