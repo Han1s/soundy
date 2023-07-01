@@ -12,6 +12,7 @@ import {
   query,
   where,
   orderBy,
+  getDoc,
 } from "firebase/firestore";
 
 // Your web app's Firebase configuration
@@ -42,6 +43,12 @@ export const getSounds = () => {
 
   return getDocs(q).then((snapshot) => snapshot.docs.map((doc) => doc.data()));
 };
+
+export const getSound = (videoId: string) => {
+  const docRef = doc(db, 'sounds', videoId);
+
+  return getDoc(docRef);
+}
 
 export const addSound = (id: string, sound: SoundType) => {
   const soundRef = doc(db, "sounds", id);

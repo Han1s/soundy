@@ -15,20 +15,22 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import { useRouter, useSelectedLayoutSegment } from "next/navigation";
-import { Button } from "@mui/material";
+import { Button, Divider } from "@mui/material";
 import { auth } from "@/firebase/config";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useState } from "react";
+import SideNavigationList from "@/components/SideNavigationList/SideNavigationList";
 
 const drawerWidth = 240;
 
-const endpoints = [
+const endpoints: Endpoint[] = [
   {
     text: "All Sounds",
     icon: <LibraryMusicIcon />,
     url: "/",
     targetSegment: null,
     guarded: false,
+    section: "main",
   },
   {
     text: "Favorites",
@@ -36,6 +38,7 @@ const endpoints = [
     url: "/favorites",
     targetSegment: "favorites",
     guarded: true,
+    section: "main",
   },
   {
     text: "Add a Sound",
@@ -43,6 +46,7 @@ const endpoints = [
     url: "/add",
     targetSegment: "add",
     guarded: true,
+    section: "content-management",
   },
 ];
 
@@ -74,8 +78,7 @@ const Template = ({ children }: { children: React.ReactNode }) => {
   };
 
   const signOutHandler = () => {
-    auth
-      .signOut()
+    signOut(auth)
       .then(function () {
         router.replace("/");
       })
@@ -115,24 +118,21 @@ const Template = ({ children }: { children: React.ReactNode }) => {
       >
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
-          <List>
-            {endpoints.map((endpoint) => (
-              <Link
-                key={endpoint.text}
-                style={{ textDecoration: "none", color: "inherit" }}
-                href={endpoint.guarded && !loggedIn ? "/sign-in" : endpoint.url}
-              >
-                <ListItem disablePadding>
-                  <ListItemButton
-                    selected={activeSegment === endpoint.targetSegment}
-                  >
-                    <ListItemIcon>{endpoint.icon}</ListItemIcon>
-                    <ListItemText primary={endpoint.text} />
-                  </ListItemButton>
-                </ListItem>
-              </Link>
-            ))}
-          </List>
+          <SideNavigationList
+            endpoints={endpoints.filter(
+              (endpoint) => endpoint.section === "main"
+            )}
+            loggedIn={loggedIn}
+            activeSegment={activeSegment}
+          />
+          <Divider />
+          <SideNavigationList
+            endpoints={endpoints.filter(
+              (endpoint) => endpoint.section === "content-management"
+            )}
+            loggedIn={loggedIn}
+            activeSegment={activeSegment}
+          />
         </Box>
       </Drawer>
       <Box sx={{ flexGrow: 1, p: 3 }}>
