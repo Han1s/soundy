@@ -34,7 +34,6 @@ const endpoints = [
     text: "Favorites",
     icon: <StarIcon />,
     url: "/favorites",
-    disabled: true,
     targetSegment: "favorites",
     guarded: true,
   },
@@ -95,14 +94,12 @@ const Template = ({ children }: { children: React.ReactNode }) => {
           <Typography variant="h6" noWrap component="div">
             Soundy
           </Typography>
-          {/* <Link href={"/sign-in"} passHref style={{ textDecoration: 'none' }}> */}
           <Button
             onClick={loggedIn ? signOutHandler : signInHandler}
             color="inherit"
           >
             {loggedIn ? "logout" : "login"}
           </Button>
-          {/* </Link> */}
         </Toolbar>
       </AppBar>
       <Drawer
@@ -125,7 +122,7 @@ const Template = ({ children }: { children: React.ReactNode }) => {
                 style={{ textDecoration: "none", color: "inherit" }}
                 href={endpoint.guarded && !loggedIn ? "/sign-in" : endpoint.url}
               >
-                <ListItem disablePadding disabled={endpoint?.disabled}>
+                <ListItem disablePadding>
                   <ListItemButton
                     selected={activeSegment === endpoint.targetSegment}
                   >

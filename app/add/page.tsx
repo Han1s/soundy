@@ -42,8 +42,8 @@ const Page = () => {
     <Container>
       <TextField
         placeholder="insert video link"
-        id="standard-name"
-        type="text"
+        id="video-upload-field"
+        type="url"
         fullWidth
         label="Youtube Link"
         onChange={(e) => setValue(e.target.value)}

@@ -11,9 +11,8 @@ import {
   doc,
   query,
   where,
+  orderBy,
 } from "firebase/firestore";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -39,9 +38,9 @@ export const db = getFirestore(app);
 const soundsRef = collection(db, "sounds");
 
 export const getSounds = () => {
-  return getDocs(soundsRef).then((snapshot) =>
-    snapshot.docs.map((doc) => doc.data())
-  );
+  const q = query(soundsRef, orderBy("date", "desc"));
+
+  return getDocs(q).then((snapshot) => snapshot.docs.map((doc) => doc.data()));
 };
 
 export const addSound = (id: string, sound: SoundType) => {
@@ -51,10 +50,10 @@ export const addSound = (id: string, sound: SoundType) => {
 };
 
 export const getUserBooks = () => {
-  const q = query(soundsRef, where('uid', '==', auth.currentUser!.uid))
+  const q = query(soundsRef, where("uid", "==", auth.currentUser!.uid));
 
   return getDocs(q).then((snapshot) => snapshot.docs.map((doc) => doc.data()));
-}
+};
 
 export async function addFavoriteSound(
   db: Firestore,
