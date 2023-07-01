@@ -44,7 +44,7 @@ export const getSounds = () => {
   );
 };
 
-export const addSoundNew = (id: string, sound: SoundType) => {
+export const addSound = (id: string, sound: SoundType) => {
   const soundRef = doc(db, "sounds", id);
 
   return setDoc(soundRef, { ...sound, uid: auth.currentUser!.uid });
