@@ -17,8 +17,8 @@ import {
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAyVjEoDbi_xwxXReB5pPns-rBfHhrJPrI",
-  authDomain: "authentication-628fb.firebaseapp.com",
+  apiKey: "AIzaSyAyVjEoDbi_xwxXReB5pPns-rBfHhrJPrI", // TODO: switch to env
+  authDomain: "authentication-628fb.firebaseapp.com", // TODO: switch to env
   databaseURL:
     "https://authentication-628fb-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "authentication-628fb",
@@ -28,7 +28,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 
 // get auth
 export const auth = getAuth(app);
@@ -45,10 +45,10 @@ export const getSounds = () => {
 };
 
 export const getSound = (videoId: string) => {
-  const docRef = doc(db, 'sounds', videoId);
+  const docRef = doc(db, "sounds", videoId);
 
   return getDoc(docRef);
-}
+};
 
 export const addSound = (id: string, sound: SoundType) => {
   const soundRef = doc(db, "sounds", id);
@@ -56,8 +56,8 @@ export const addSound = (id: string, sound: SoundType) => {
   return setDoc(soundRef, { ...sound, uid: auth.currentUser!.uid });
 };
 
-export const getUserBooks = () => {
-  const q = query(soundsRef, where("uid", "==", auth.currentUser!.uid));
+export const getUserSounds = () => {
+  const q = query(soundsRef, where("uid", "==", auth.currentUser?.uid));
 
   return getDocs(q).then((snapshot) => snapshot.docs.map((doc) => doc.data()));
 };

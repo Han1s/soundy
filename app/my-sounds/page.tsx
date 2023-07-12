@@ -2,18 +2,26 @@
 
 import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
 import SoundsList from "@/components/SoundsList/SoundsList";
-import YoutubeCard from "@/components/YoutubeCard/YoutubeCard";
-import { getSounds } from "@/firebase/config";
-import { Grid } from "@mui/material";
-import { DocumentData } from "firebase/firestore/lite";
-import * as React from "react";
+import { auth, getSounds, getUserSounds } from "@/firebase/config";
+import { onAuthStateChanged } from "firebase/auth";
+import { DocumentData } from "firebase/firestore";
+import { useRouter } from "next/navigation";
+import React from "react";
 
-const Home = () => {
+const MySoundsPage = () => {
   const [loading, setLoading] = React.useState(true);
   const [sounds, setSounds] = React.useState<DocumentData[]>([]);
 
+  const router = useRouter();
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      router.replace("/sign-in");
+    }
+  });
+
   React.useEffect(() => {
-    getSounds().then((firebaseSounds) => {
+    getUserSounds().then((firebaseSounds) => {
       setSounds(firebaseSounds);
       setLoading(false);
     });
@@ -27,4 +35,4 @@ const Home = () => {
   return soundSection;
 };
 
-export default Home;
+export default MySoundsPage;

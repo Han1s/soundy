@@ -20,6 +20,7 @@ import { auth } from "@/firebase/config";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useState } from "react";
 import SideNavigationList from "@/components/SideNavigationList/SideNavigationList";
+import QueueMusicIcon from "@mui/icons-material/QueueMusic";
 
 const drawerWidth = 240;
 
@@ -48,6 +49,14 @@ const endpoints: Endpoint[] = [
     guarded: true,
     section: "content-management",
   },
+  {
+    text: "My Sounds",
+    icon: <QueueMusicIcon />,
+    url: "/my-sounds",
+    targetSegment: "my-sounds",
+    guarded: true,
+    section: "content-management",
+  },
 ];
 
 const Template = ({ children }: { children: React.ReactNode }) => {
@@ -59,7 +68,6 @@ const Template = ({ children }: { children: React.ReactNode }) => {
 
   onAuthStateChanged(auth, async (user) => {
     if (user) {
-      //do your logged in user crap here
       setLoggedIn(true);
     } else {
       setLoggedIn(false);
