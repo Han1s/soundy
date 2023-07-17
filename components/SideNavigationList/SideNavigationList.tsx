@@ -16,7 +16,6 @@ interface SideNavigationListProps {
 
 const SideNavigationList = ({
   endpoints,
-  loggedIn,
   activeSegment,
 }: SideNavigationListProps) => (
   <List>

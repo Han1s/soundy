@@ -17,7 +17,7 @@ const formatAuthUser = (user: User) => ({
   email: user.email,
 });
 
-interface FormattedUser {
+export type FormattedUser = {
   uid: string;
   email: string | null;
 }
@@ -55,7 +55,7 @@ export default function useFirebaseAuth() {
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
         console.log("Success. The user is created in firebase");
-        router.push("/logged_in");
+        router.push("/");
       })
       .catch((error) => {
         window.alert(error.message);
