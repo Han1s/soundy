@@ -1,17 +1,18 @@
 "use client";
 
-import { auth } from "@/firebase/config";
-import { onAuthStateChanged } from "firebase/auth";
+import { useAuthUserContext } from "@/context/AuthUserContext";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const Page = () => {
+  const { authUser, loading } = useAuthUserContext();
   const router = useRouter();
 
-  onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-      router.replace("/sign-in");
+  useEffect(() => {
+    if (!loading && !authUser) {
+      router.push("/sign-in");
     }
-  });
+  }, [authUser, loading]);
 
   return <div>TODO: Favorites</div>;
 };

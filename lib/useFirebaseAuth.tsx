@@ -10,7 +10,7 @@ import {
   NextOrObserver,
   User,
 } from "firebase/auth";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const formatAuthUser = (user: User) => ({
   uid: user.uid,
@@ -18,8 +18,8 @@ const formatAuthUser = (user: User) => ({
 });
 
 interface FormattedUser {
-    uid: string;
-    email: string | null;
+  uid: string;
+  email: string | null;
 }
 
 export default function useFirebaseAuth() {
@@ -67,7 +67,10 @@ export default function useFirebaseAuth() {
   const logOut = () => signOut(auth).then(clear);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, authStateChanged as NextOrObserver<User>);
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      authStateChanged as NextOrObserver<User>
+    );
     return unsubscribe;
   }, []);
 

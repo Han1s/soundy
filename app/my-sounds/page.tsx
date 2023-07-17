@@ -2,33 +2,35 @@
 
 import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
 import SoundsList from "@/components/SoundsList/SoundsList";
-import { auth, getSounds, getUserSounds } from "@/firebase/config";
-import { onAuthStateChanged } from "firebase/auth";
+import { useAuthUserContext } from "@/context/AuthUserContext";
+import { getUserSounds } from "@/firebase/config";
 import { DocumentData } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 
 const MySoundsPage = () => {
-  const [loading, setLoading] = React.useState(true);
+  const [isFetching, setIsFetching] = React.useState(true);
   const [sounds, setSounds] = React.useState<DocumentData[]>([]);
-
+  
+  const { authUser, loading } = useAuthUserContext();
+  
   const router = useRouter();
 
-  onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-      router.replace("/sign-in");
+  useEffect(() => {
+    if (!loading && !authUser) {
+      router.push("/sign-up");
     }
-  });
+  }, [authUser, loading]);
 
   React.useEffect(() => {
     getUserSounds().then((firebaseSounds) => {
       setSounds(firebaseSounds);
-      setLoading(false);
+      setIsFetching(false);
     });
   }, []);
 
   let soundSection = <LoadingSpinner />;
-  if (!loading) {
+  if (!isFetching) {
     soundSection = <SoundsList sounds={sounds} />;
   }
 

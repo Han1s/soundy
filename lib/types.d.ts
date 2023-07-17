@@ -13,6 +13,5 @@ type Endpoint = {
   icon: React.ReactNode;
   url: string;
   targetSegment: null | string;
-  guarded: boolean;
   section: "main" | "content-management";
 };

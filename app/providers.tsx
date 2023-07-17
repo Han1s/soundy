@@ -1,5 +1,6 @@
 "use client";
 
+import { AuthUserProvider } from "@/context/AuthUserContext";
 import { CssBaseline } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { ReactNode } from "react";
@@ -16,10 +17,12 @@ const darkTheme = createTheme({
 
 const Providers = ({ children }: Props) => {
   return (
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-      {children}
-    </ThemeProvider>
+    <AuthUserProvider>
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        {children}
+      </ThemeProvider>
+    </AuthUserProvider>
   );
 };
 

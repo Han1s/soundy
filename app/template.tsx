@@ -18,9 +18,11 @@ import { useRouter, useSelectedLayoutSegment } from "next/navigation";
 import { Button, Divider } from "@mui/material";
 import { auth } from "@/firebase/config";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SideNavigationList from "@/components/SideNavigationList/SideNavigationList";
 import QueueMusicIcon from "@mui/icons-material/QueueMusic";
+import { useAuthUserContext } from "@/context/AuthUserContext";
+import PROTECTED_URLS from "@/lib/constants";
 
 const drawerWidth = 240;
 
@@ -30,7 +32,6 @@ const endpoints: Endpoint[] = [
     icon: <LibraryMusicIcon />,
     url: "/",
     targetSegment: null,
-    guarded: false,
     section: "main",
   },
   {
@@ -38,7 +39,6 @@ const endpoints: Endpoint[] = [
     icon: <StarIcon />,
     url: "/favorites",
     targetSegment: "favorites",
-    guarded: true,
     section: "main",
   },
   {
@@ -46,7 +46,6 @@ const endpoints: Endpoint[] = [
     icon: <AddIcon />,
     url: "/add",
     targetSegment: "add",
-    guarded: true,
     section: "content-management",
   },
   {
@@ -54,7 +53,6 @@ const endpoints: Endpoint[] = [
     icon: <QueueMusicIcon />,
     url: "/my-sounds",
     targetSegment: "my-sounds",
-    guarded: true,
     section: "content-management",
   },
 ];
@@ -62,9 +60,21 @@ const endpoints: Endpoint[] = [
 const Template = ({ children }: { children: React.ReactNode }) => {
   const [loggedIn, setLoggedIn] = useState(false);
 
+  const { authUser, loading } = useAuthUserContext();
+  const activeSegment = useSelectedLayoutSegment();
   const router = useRouter();
 
-  const activeSegment = useSelectedLayoutSegment();
+  const shouldRedirectToSignIn =
+    !loading &&
+    !authUser &&
+    activeSegment &&
+    PROTECTED_URLS.includes(activeSegment);
+
+  if (shouldRedirectToSignIn) router.push("/sign-in");
+
+  useEffect(() => {
+    if (shouldRedirectToSignIn) router.push("/sign-in");
+  }, [authUser, loading]);
 
   onAuthStateChanged(auth, async (user) => {
     if (user) {

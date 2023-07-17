@@ -1,5 +1,7 @@
-import { createContext, useContext, Context } from 'react'
-import useFirebaseAuth from '../lib/useFirebaseAuth';
+// https://github.com/dan-sproutward/nextjs-auth-with-firebase/blob/main/lib/useFirebaseAuth.jsx
+
+import { createContext, useContext, ReactNode } from "react";
+import useFirebaseAuth from "../lib/useFirebaseAuth";
 
 const authUserContext = createContext({
   authUser: null,
@@ -7,12 +9,13 @@ const authUserContext = createContext({
   signIn: async () => {},
   signUp: async () => {},
   logOut: async () => {},
-  signInWithGoogle: async () => {}
 });
 
-export function AuthUserProvider({ children }) {
+export function AuthUserProvider({ children }: { children: ReactNode }) {
   const auth = useFirebaseAuth();
-  return <authUserContext.Provider value={auth}>{children}</authUserContext.Provider>;
+  return (
+    <authUserContext.Provider value={auth}>{children}</authUserContext.Provider>
+  );
 }
 
 export const useAuthUserContext = () => useContext(authUserContext);
