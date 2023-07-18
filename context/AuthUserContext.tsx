@@ -8,7 +8,7 @@ interface AuthUserContextType {
   authUser: FormattedUser | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<UserCredential>;
+  signUp: (email: string, password: string) => Promise<UserCredential | void>;
   logOut: () => Promise<void>;
 }
 
