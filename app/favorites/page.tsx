@@ -1,20 +1,9 @@
 "use client";
 
-import { useAuthUserContext } from "@/context/AuthUserContext";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { withLogin } from "@/lib/withLogin";
 
-const Page = () => {
-  const { authUser, loading } = useAuthUserContext();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!loading && !authUser) {
-      router.push("/sign-in");
-    }
-  }, [authUser, loading]);
-
+const FavoritesPage = () => {
   return <div>TODO: Favorites</div>;
 };
 
-export default Page;
+export default withLogin(FavoritesPage);

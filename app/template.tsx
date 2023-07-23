@@ -14,7 +14,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
-import { useRouter, useSelectedLayoutSegment } from "next/navigation";
+import { redirect, useRouter, useSelectedLayoutSegment } from "next/navigation";
 import { Button, Divider } from "@mui/material";
 import { auth } from "@/firebase/config";
 import { onAuthStateChanged, signOut } from "firebase/auth";
@@ -64,18 +64,6 @@ const Template = ({ children }: { children: React.ReactNode }) => {
   const activeSegment = useSelectedLayoutSegment();
   const router = useRouter();
 
-  const shouldRedirectToSignIn =
-    !loading &&
-    !authUser &&
-    activeSegment &&
-    PROTECTED_URLS.includes(activeSegment);
-
-  if (shouldRedirectToSignIn) router.push("/sign-in");
-
-  useEffect(() => {
-    if (shouldRedirectToSignIn) router.push("/sign-in");
-  }, [authUser, loading]);
-
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       setLoggedIn(true);
@@ -83,13 +71,6 @@ const Template = ({ children }: { children: React.ReactNode }) => {
       setLoggedIn(false);
     }
   });
-
-  if (
-    activeSegment &&
-    ["sign-in", "sign-up"].includes(activeSegment as string)
-  ) {
-    return children;
-  }
 
   const signInHandler = () => {
     router.replace("/sign-in");
@@ -101,9 +82,16 @@ const Template = ({ children }: { children: React.ReactNode }) => {
         router.replace("/");
       })
       .catch(function (error) {
-        // An error happened
+        console.log(error.message);
       });
   };
+
+  if (
+    activeSegment &&
+    ["sign-in", "sign-up"].includes(activeSegment as string)
+  ) {
+    return children;
+  }
 
   return (
     <Box sx={{ display: "flex" }}>

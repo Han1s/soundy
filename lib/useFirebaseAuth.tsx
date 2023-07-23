@@ -9,6 +9,7 @@ import {
   GoogleAuthProvider,
   NextOrObserver,
   User,
+  signInWithPopup,
 } from "firebase/auth";
 import { useRouter } from "next/navigation";
 
@@ -50,6 +51,18 @@ export default function useFirebaseAuth() {
     setAuthUser(null);
     setLoading(false);
   };
+  
+  const signInWithGoogle = () => {
+    return signInWithPopup(auth, new GoogleAuthProvider()).then((userCred) => {
+      return {
+        user: userCred.user
+      }
+    }).catch((error) => {
+      return {
+        error: error.message
+      }
+    })
+  }
 
   const signIn = (email: string, password: string) =>
     signInWithEmailAndPassword(auth, email, password)

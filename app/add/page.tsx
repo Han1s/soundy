@@ -7,8 +7,9 @@ import { serverTimestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { auth } from "@/firebase/config";
+import { withLogin } from "@/lib/withLogin";
 
-const Page = () => {
+const AddPage = () => {
   const [value, setValue] = useState("");
 
   const router = useRouter();
@@ -56,4 +57,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default withLogin(AddPage);
