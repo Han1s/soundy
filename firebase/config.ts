@@ -37,6 +37,7 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 
 const soundsRef = collection(db, "sounds");
+const userFavoritesRef = collection(db, "userFavorites");
 
 export const getSounds = () => {
   const q = query(soundsRef, orderBy("date", "desc"));
@@ -58,6 +59,12 @@ export const addSound = (id: string, sound: SoundType) => {
 
 export const getUserSounds = () => {
   const q = query(soundsRef, where("uid", "==", auth.currentUser?.uid));
+
+  return getDocs(q).then((snapshot) => snapshot.docs.map((doc) => doc.data()));
+};
+
+export const getUserFavorites = () => {
+  const q = query(userFavoritesRef, where("uid", "==", auth.currentUser?.uid));
 
   return getDocs(q).then((snapshot) => snapshot.docs.map((doc) => doc.data()));
 };

@@ -28,14 +28,10 @@ const YoutubeCard = ({ source }: YoutubeCard) => {
     <Card>
       <CardActions sx={styles.cardActions}>
         <IconButton onClick={toggleFavoriteHandler}>
-          <StarOutlineIcon color="primary" onClick={() => {}} />
+          <StarOutlineIcon color="primary" />
         </IconButton>
       </CardActions>
-      <CardMedia
-        src={link}
-        component={"iframe"}
-        sx={styles.cardMedia}
-      />
+      <CardMedia src={link} component={"iframe"} sx={styles.cardMedia} />
     </Card>
   );
 };

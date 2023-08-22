@@ -3,6 +3,7 @@
 import { createContext, useContext, ReactNode } from "react";
 import useFirebaseAuth, { FormattedUser } from "../lib/useFirebaseAuth";
 import { UserCredential } from "firebase/auth";
+import { getUserFavorites } from "@/firebase/config";
 
 interface AuthUserContextType {
   authUser: FormattedUser | null;
@@ -10,6 +11,7 @@ interface AuthUserContextType {
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string) => Promise<UserCredential | void>;
   logOut: () => Promise<void>;
+  favorites: string[];
 }
 
 const authUserContext = createContext<AuthUserContextType>({
@@ -18,12 +20,18 @@ const authUserContext = createContext<AuthUserContextType>({
   signIn: async () => {},
   signUp: async () => {},
   logOut: async () => {},
+  favorites: [],
 });
 
 export function AuthUserProvider({ children }: { children: ReactNode }) {
   const auth = useFirebaseAuth();
+
+  // getUserFavorites().then((res) => console.log(res));
+
   return (
-    <authUserContext.Provider value={auth}>{children}</authUserContext.Provider>
+    <authUserContext.Provider value={{ ...auth, favorites: [] }}>
+      {children}
+    </authUserContext.Provider>
   );
 }
 
